@@ -68,6 +68,7 @@ export default {
       players: undefined,
       wait: false,
       pageNum: 0,
+      searchString: "",
     };
   },
   mounted() {
@@ -111,7 +112,7 @@ export default {
     async executeQuery() {
       this.preTests();
       const page = (this.pageNum <= 0) ? 1 : this.pageNum;
-      const searchName = this.cleanUpSearchString(this.name);
+      const searchName = this.cleanUpSearchString(this.searchString);
       const newPlayers = await this.$apollo.query({
         query: (!this.serverQuery) ? gql`
         query {
@@ -161,21 +162,22 @@ export default {
       return ret;
     },
     preTests() {
+      this.searchString = this.name;
       // Name is fixed beforehand so it's more clear to the user what the page is actually querying.
-      let nameWithoutWhitespace = this.cleanUpSearchString(this.name);
+      let nameWithoutWhitespace = this.cleanUpSearchString(this.searchString);
       if (this.pageNum < 1) {
         this.$router.replace(`/search/${nameWithoutWhitespace}/page/1`);
       }
       this.serverQuery = false;
       this.serverName = '';
-      if (this.name.length === 36 && this.name.split('-').length === 5) {
-        this.$router.replace(`/player/${this.name}`);
+      if (this.searchString.length === 36 && this.searchString.split('-').length === 5) {
+        this.$router.replace(`/player/${this.searchString}`);
         return;
       }
-      if (this.name.includes(':')) {
-        const nme = this.name.split(':');
+      if (this.searchString.includes(':')) {
+        const nme = this.searchString.split(':');
         if (!Number.isNaN((nme[1] * 1))) {
-          [this.name, this.pageNum] = nme;
+          [this.searchString, this.pageNum] = nme;
           this.$router.replace(`/search/${nameWithoutWhitespace}/page/${(this.pageNum > Math.ceil(this.players.totalCount / 20))
             ? Math.ceil(this.players.totalCount / 20) : this.pageNum}`);
           return;
@@ -183,10 +185,10 @@ export default {
         if (nme[0] === ('on')) {
           this.serverQuery = true;
           [nameWithoutWhitespace, this.serverName] = nme;
-          this.name = nme.join(':');
+          this.searchString = nme.join(':');
         }
       }
-      if (this.name === '') {
+      if (this.searchString === '') {
         this.$router.replace('/main');
       }
     },
