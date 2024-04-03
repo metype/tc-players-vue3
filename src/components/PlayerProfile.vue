@@ -88,6 +88,8 @@ import gql from 'graphql-tag';
 import * as countdown from 'countdown';
 import BanListItem from './BanListItem.vue';
 
+console.log(countdown);
+
 export default {
   name: 'PlayerProfile',
   components: { BanListItem },
@@ -127,7 +129,7 @@ export default {
         reason: ban.reason,
         staff: ban.staffName,
         start: `${this.formatDate(ban.createdAt * 1)} | ${this.fromNow(ban.createdAt * 1)}`,
-        end: ban.expiresAt * 1 === 0 ? null : `${this.formatDate(ban.expiresAt * 1)} | ${this.fromNow(ban.createdAt * 1)}`,
+        end: ban.expiresAt * 1 === 0 ? 'Null' : `${this.formatDate(ban.expiresAt * 1)} | ${this.fromNow(ban.createdAt * 1)}`,
         pardoned: ban.expiresAt * 1 === 0 && !ban.isActive,
       }));
     },

@@ -14,13 +14,13 @@
     </v-card>
     <v-card class="mt-2 pt-2 pb-2">
       <p class="text-grey-lighten-1 text-lg-h6 text-center">Expires</p>
-      <h2 class="text-center" v-if="banEnd != null">
+      <h2 class="text-center" v-if="banEnd !== 'Null'">
         {{banEnd}}
       </h2>
-      <h2 class="text-center text-amber-accent-4" v-if="banEnd == null && !pardoned">
+      <h2 class="text-center text-amber-accent-4" v-if="banEnd === 'Null' && !pardoned">
         Permanent
       </h2>
-      <h2 class="text-center text-amber-accent-1" v-if="banEnd == null && pardoned">
+      <h2 class="text-center text-amber-accent-1" v-if="banEnd === 'Null' && pardoned">
         Permanent, but pardoned
       </h2>
     </v-card>
