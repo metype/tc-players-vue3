@@ -85,10 +85,11 @@
 
 <script>
 import gql from 'graphql-tag';
-import * as countdown from 'countdown';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'
 import BanListItem from './BanListItem.vue';
 
-console.log(countdown);
+dayjs.extend(relativeTime);
 
 export default {
   name: 'PlayerProfile',
@@ -145,7 +146,8 @@ export default {
       return this.player.infractions?.bans?.length === 0;
     },
     fromNow(date) {
-      return `${countdown.default(new Date(), date, countdown.ALL, 1)} ago`;
+      var useableDate = Number(date);
+      return `${dayjs(new Date(useableDate)).fromNow()}`;
     },
     formatDate(date) {
       if (!date) {
