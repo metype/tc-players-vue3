@@ -2,18 +2,22 @@
   <v-expansion-panel variant="accordion">
     <v-expansion-panel-title>
       <v-icon class="flex-grow-0 pr-4">mdi-alert-octagon</v-icon>
-      <b>{{banReason}}</b>
-       <v-chip class="mr-0 ml-auto">
+      <v-chip :color="isBanActive ? 'red' : 'gray'">
+        <p v-if="isBanActive">Active</p>
+        <p v-else>Inactive</p>
+      </v-chip>
+      <v-chip class="mr-2 ml-2">
         {{banStaff}}
       </v-chip>
+      <b>{{banReason}}</b>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
       <v-lazy>
         <BanDetail
-          :isBanActive="isBanActive"
           :banServer="banServer"
           :banStart="banStart"
-          :banEnd="banEnd">
+          :banEnd="banEnd"
+        :pardoned="pardoned">
         </BanDetail>
       </v-lazy>
     </v-expansion-panel-text>
@@ -22,6 +26,7 @@
 
 <script>
 import BanDetail from './BanDetail.vue';
+import countdown from "countdown";
 
 export default {
   name: 'BanListItem',
@@ -51,6 +56,10 @@ export default {
       type: String,
       required: true,
     },
-  },
+    pardoned: {
+      type:Boolean,
+      required: true,
+    }
+  }
 };
 </script>

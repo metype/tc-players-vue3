@@ -1,7 +1,7 @@
 <template>
-        <v-flex>
+        <div class="d-inline">
            <v-progress-linear indeterminate v-if="player == null"></v-progress-linear>
-            <v-card v-if="name == ''">
+            <v-card v-if="name === ''">
               <h3 class="justify-center"
               style="text-align:center;">Please provide a UUID.</h3>
             </v-card>
@@ -11,10 +11,16 @@
             </v-card>
               <v-img
                 :src="playerAvatarUrl"
-                style="width:20%;
-                left:40%"
-                loading="Loading Avatar..."
+                style="width:15vw; height:15vw; margin-left: auto; margin-right: auto; margin-top:1rem;"
               >
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                      color="grey-lighten-4"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>
+                </template>
               </v-img>
               <h1 class="text-center">
                 <v-chip :color="player.connectedTo!=null?'green':'red'">
@@ -23,36 +29,39 @@
                 </v-chip>
                 {{player.lastSeenName}}
               </h1>
-              <h2 class="text-center">
-                <v-icon>mdi-account-outline</v-icon>
-                {{player.uuid}}
-              </h2>
-              <v-divider style="margin-top:10px;margin-bottom:10px"></v-divider>
-              <h2 class="text-center"  v-if="!noGroups()">
-                <v-icon>mdi-star</v-icon>
-                <b style="margin-right:20px"> Ranks</b>
-                <v-chip
-                  v-for="(rank) in playerRanks"
-                  :key="rank"
-                  class="mr-4">
-                    {{rank}}
-                  </v-chip>
-              </h2>
-              <h2 v-else class="text-center">
-                <v-icon>mdi-star-outline</v-icon>
-                <b style="margin-right:20px"> User Has No Ranks</b>
-              </h2>
-              <v-divider style="margin-top:10px;margin-bottom:10px"></v-divider>
-              <h2 class="text-center">
-                <v-icon>mdi-clock-outline</v-icon>
-                <b> First Login</b>
-                {{playerFirstLogin}} | {{fromNow(player.firstLogin)}}
-              </h2>
-              <h2 class="text-center">
-                <v-icon>mdi-clock-outline</v-icon>
-                <b> Last Login</b>
-                {{playerLastLogin}} | {{fromNow(player.lastLogin)}}
-              </h2>
+          <v-card class="mt-2 pt-2 pb-2">
+            <p class="text-grey-lighten-1 text-xl-h6 text-center">UUID</p>
+            <h2 class="text-center">
+              {{player.uuid}}
+            </h2>
+          </v-card>
+              <v-divider class="ma-4"></v-divider>
+          <v-card class="mt-2 pt-2 pb-2" v-if="!noGroups()">
+            <p class="text-grey-lighten-1 text-xl-h6 text-center">Ranks</p>
+            <div class="d-flex w-100 justify-center">
+              <v-chip
+                v-for="(rank) in playerRanks"
+                :key="rank"
+              class="ml-2 mr-2">
+                {{rank}}
+              </v-chip>
+            </div>
+          </v-card>
+          <v-card class="mt-2 pt-2 pb-2" v-else>
+            <p class="text-grey-lighten-1 text-xl-h6 text-center">No Ranks</p>
+          </v-card>
+          <v-card class="mt-2 pt-2 pb-2">
+            <p class="text-grey-lighten-1 text-xl-h6 text-center">First Login</p>
+            <h2 class="text-center">
+              {{playerFirstLogin}} | {{fromNow(player.firstLogin)}}
+            </h2>
+          </v-card>
+          <v-card class="mt-2 pt-2 pb-2">
+            <p class="text-grey-lighten-1 text-xl-h6 text-center">Last Login</p>
+            <h2 class="text-center">
+              {{playerLastLogin}} | {{fromNow(player.lastLogin)}}
+            </h2>
+          </v-card>
               <v-divider style="margin-top:10px;margin-bottom:10px"
                v-if="!noInfractions()"></v-divider>
               <h2 class="text-center" v-if="!noInfractions()">
@@ -68,10 +77,11 @@
                   :isBanActive="ban.active"
                   :banServer="ban.server"
                   :banStart="ban.start"
-                  :banEnd="ban.end">
+                  :banEnd="ban.end"
+                  :pardoned="ban.pardoned">
                 </BanListItem>
               </v-expansion-panels>
-        </v-flex>
+        </div>
 </template>
 
 <script>
@@ -117,8 +127,9 @@ export default {
         server: (ban.server == null) ? 'Tallcraft Network' : ban.server.name,
         reason: ban.reason,
         staff: ban.staffName,
-        start: `${this.formatDate(ban.createdAt * 1)}`,
-        end: `${this.formatDate(ban.expiresAt * 1)}`,
+        start: `${this.formatDate(ban.createdAt * 1)} | ${this.fromNow(ban.createdAt * 1)}`,
+        end: ban.expiresAt * 1 === 0 ? null : `${this.formatDate(ban.expiresAt * 1)} | ${this.fromNow(ban.createdAt * 1)}`,
+        pardoned: ban.expiresAt * 1 === 0 && !ban.isActive,
       }));
     },
   },

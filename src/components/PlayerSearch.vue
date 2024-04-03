@@ -76,6 +76,7 @@ export default {
     this.executeQuery().then(result => {
        this.players = result;
        this.wait = false;
+       this.checkOneResult();
     });
   },
   computed: {
@@ -200,6 +201,7 @@ export default {
       this.executeQuery().then(result => {
         this.players = result;
         this.wait = false;
+        this.checkOneResult();
       });
     },
     checkOneResult() {

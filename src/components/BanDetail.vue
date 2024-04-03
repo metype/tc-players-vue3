@@ -1,54 +1,38 @@
 <template>
   <div>
-    <v-list>
-        <v-list-item>
-          <v-list-item-title>
-            <v-icon>mdi-help</v-icon>
-            <b>Active</b>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{isBanActive}}
-          </v-list-item-subtitle>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <v-icon>dns</v-icon>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            <b>Server</b>
-            {{banServer}}
-          </v-list-item-subtitle>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <v-icon>schedule</v-icon>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            <b>Created</b>
-            {{banStart}}
-          </v-list-item-subtitle>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-title>
-            <v-icon>schedule</v-icon>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            <b>Expires</b>
-            {{banEnd}}
-          </v-list-item-subtitle>
-        </v-list-item>
-    </v-list>
+    <v-card class="mt-2 pt-2 pb-2">
+      <p class="text-grey-lighten-1 text-lg-h6 text-center">Server</p>
+      <h2 class="text-center">
+        {{banServer}}
+      </h2>
+    </v-card>
+    <v-card class="mt-2 pt-2 pb-2">
+      <p class="text-grey-lighten-1 text-lg-h6 text-center">Created</p>
+      <h2 class="text-center">
+        {{banStart}}
+      </h2>
+    </v-card>
+    <v-card class="mt-2 pt-2 pb-2">
+      <p class="text-grey-lighten-1 text-lg-h6 text-center">Expires</p>
+      <h2 class="text-center" v-if="banEnd != null">
+        {{banEnd}}
+      </h2>
+      <h2 class="text-center text-amber-accent-4" v-if="banEnd == null && !pardoned">
+        Permanent
+      </h2>
+      <h2 class="text-center text-amber-accent-1" v-if="banEnd == null && pardoned">
+        Permanent, but pardoned
+      </h2>
+    </v-card>
   </div>
 </template>
 
 <script>
+import countdown from "countdown";
+
 export default {
   name: 'BanDetail',
   props: {
-    isBanActive: {
-      type: Boolean,
-      required: true,
-    },
     banServer: {
       type: String,
       required: true,
@@ -61,6 +45,10 @@ export default {
       type: String,
       required: true,
     },
+    pardoned: {
+      type:Boolean,
+      required: true,
+    }
   },
 };
 </script>
