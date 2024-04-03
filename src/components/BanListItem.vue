@@ -26,7 +26,6 @@
 
 <script>
 import BanDetail from './BanDetail.vue';
-import countdown from "countdown";
 
 export default {
   name: 'BanListItem',

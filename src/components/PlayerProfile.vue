@@ -85,7 +85,7 @@
 
 <script>
 import gql from 'graphql-tag';
-import countdown from 'countdown';
+import * as countdown from 'countdown';
 import BanListItem from './BanListItem.vue';
 
 export default {
@@ -143,7 +143,7 @@ export default {
       return this.player.infractions?.bans?.length === 0;
     },
     fromNow(date) {
-      return `${countdown(new Date(), date, countdown.ALL, 1)} ago`;
+      return `${countdown.default(new Date(), date, countdown.ALL, 1)} ago`;
     },
     formatDate(date) {
       if (!date) {

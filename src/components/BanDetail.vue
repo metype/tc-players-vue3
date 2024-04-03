@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import countdown from "countdown";
 
 export default {
   name: 'BanDetail',
