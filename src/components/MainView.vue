@@ -23,7 +23,7 @@
 <script>
 
 import gql from 'graphql-tag';
-import logo from '../../../tc-players-vue3/src/assets/logo.svg';
+import logo from '@/assets/logo.svg';
 
 export default {
   name: 'MainView',

@@ -64,10 +64,8 @@
           </v-card>
               <v-divider style="margin-top:10px;margin-bottom:10px"
                v-if="!noInfractions()"></v-divider>
-              <h2 class="text-center" v-if="!noInfractions()">
-                <v-icon>account_balance</v-icon>
-                <b> Bans</b>
-              </h2>
+          <v-card class="mt-2 pt-2 pb-2" v-if="!noInfractions()">
+            <p class="text-grey-lighten-1 text-xl-h6 text-center mb-1">Bans</p>
               <v-expansion-panels multiple>
                 <BanListItem
                   v-for="(ban, i) in playerBans"
@@ -81,6 +79,7 @@
                   :pardoned="ban.pardoned">
                 </BanListItem>
               </v-expansion-panels>
+          </v-card>
         </div>
 </template>
 
