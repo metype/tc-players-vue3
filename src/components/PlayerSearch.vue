@@ -13,28 +13,42 @@
       <h1 v-show="Array.isArray(players.result)">
         Search results for '{{name}}' (Page {{pageNum}}/{{Math.ceil(players.totalCount/20)}}) :
       </h1>
-      <div class="block row" v-for="(player, index) in players.result" :key="index">
-        <v-btn block
-               left
-               class="btn-text d-inline"
-               @click.native="$router.push(`/player/${player.uuid}`)">
-          <v-icon>mdi-account-outline</v-icon>
-          <p class="block" style="margin:auto">{{getRanks(player.uuid)}} {{player.lastSeenName}}</p>
-        </v-btn>
-      </div>
-      <div class="d-inline-flex mt-5 w-100">
-        <v-btn class="btn-text mr-auto w-25"
-          @click.native="changePage(-1)"
-          :disabled="pageNum<=1 || wait">
-          <p class="block" style="margin:auto">Previous</p>
-        </v-btn>
-        <v-btn class="btn-text ml-auto w-25"
-               @click.native="changePage(1)"
-               :disabled="nextDisabled">
-          <p class="block" style="margin:auto">Next</p>
-        </v-btn>
-      </div>
     </div>
+  </div>
+  <v-container class="playerContainer pa-0" fluid v-if="players != null">
+    <div class="d-inline-flex" v-for="(player, index) in players.result" :key="index">
+      <v-card
+        class="ma-7"
+        @click.native="$router.push(`/player/${player.uuid}`)">
+        <v-img
+          :src="playerAvatarUrl(player.uuid)"
+          style="width:min(6rem, 20vw); height:min(6rem, 20vw); margin-left: auto; margin-right: auto; margin-top:1rem;"
+          class="ma-5"
+        >
+          <template v-slot:placeholder>
+            <div class="d-flex align-center justify-center fill-height">
+              <v-progress-circular
+                color="grey-lighten-4"
+                indeterminate
+              ></v-progress-circular>
+            </div>
+          </template>
+        </v-img>
+        <h4 class="text-center mb-5">{{player.lastSeenName}}</h4>
+      </v-card>
+    </div>
+  </v-container>
+  <div class="d-inline-flex mt-5 w-100" v-if="players != null">
+    <v-btn class="btn-text mr-auto w-25"
+           @click.native="changePage(-1)"
+           :disabled="pageNum<=1 || wait">
+      <p class="block" style="margin:auto">Previous</p>
+    </v-btn>
+    <v-btn class="btn-text ml-auto w-25"
+           @click.native="changePage(1)"
+           :disabled="nextDisabled">
+      <p class="block" style="margin:auto">Next</p>
+    </v-btn>
   </div>
 </template>
 
@@ -44,6 +58,12 @@ a {
 }
 .btn-text {
   float: left;
+}
+
+.playerContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(min(6rem, 20vw) + 6rem));
+  justify-content: center;
 }
 </style>
 
@@ -93,21 +113,16 @@ export default {
     },
   },
   methods: {
+    playerAvatarUrl(uuid) {
+      if (uuid === undefined) {
+        return '';
+      }
+      return `https://crafatar.com/avatars/${uuid}?size=300&overlay`;
+    },
     cleanUpSearchString(string) {
       let outputString = string.replace(/\s*$/, ''); // Trim whitespaces off the end
       outputString = outputString.replace('_', '\\\\_'); // Escape underscores so the query is not misinterpreted
       return outputString;
-    },
-    getRanks(uuid) {
-      const result = this.players.result.filter((player) => player.uuid === uuid)[0];
-      if (result == null || result.groups?.length === 0) {
-        return null;
-      }
-      return `[${result.groups.map((group) => group.id)
-        .join()
-        .split(',')
-        .join('] [')
-        .toUpperCase()}]`;
     },
     async executeQuery() {
       this.preTests();
