@@ -8,11 +8,10 @@
       </v-main>
       <v-toolbar color="primary" dark
       class="position-fixed w-100 pa-0">
-        <router-link to="/main">
-          <v-toolbar-title id="title"  class="mr-3 ml-3" >
-            <v-icon>mdi-home</v-icon>
-          </v-toolbar-title>
-        </router-link>
+        <!--          <v-toolbar-title id="title"  class="mr-3 ml-3" >-->
+        <!--            <v-icon>mdi-home</v-icon>-->
+        <!--          </v-toolbar-title>-->
+        <!--        </router-link>-->
         <v-text-field
           flat
           solo-inverted

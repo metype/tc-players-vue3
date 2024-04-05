@@ -22,7 +22,7 @@
         @click.native="$router.push(`/player/${player.uuid}`)">
         <v-img
           :src="playerAvatarUrl(player.uuid)"
-          style="width:min(6rem, 20vw); height:min(6rem, 20vw); margin-left: auto; margin-right: auto; margin-top:1rem;"
+          style="width:min(6rem, 20vw); height:min(6rem, 20vw);"
           class="ma-5"
         >
           <template v-slot:placeholder>
