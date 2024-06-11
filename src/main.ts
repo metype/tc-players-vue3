@@ -22,19 +22,7 @@ import router from "./router";
 import {ApolloClient} from "apollo-boost";
 import {registerPlugins} from "./plugins";
 
-// const mq = window.matchMedia?.('(prefers-color-scheme: dark)');
-//
-// vuetify.theme.global.name.value = mq?.matches ? "dark" : "light";
-//
-// // eslint-disable-next-line no-unused-expressions
-// mq?.addEventListener?.('change', (e) => {
-//   vuetify.theme.global.name.value = e.matches ? "dark" : "light";
-// });
-
-// Hopefully temporary, but I have some hardcoded colors in the UI that
-// provide rather bad contrast in light mode and the simple fix is to disable
-// light mode until I figure out an easy way to make those colors dynamic
-// and always-readable
+// https://github.com/Tallcraft/tc-players/issues/19
 vuetify.theme.global.name.value = "dark";
 
 const cache = new InMemoryCache();
